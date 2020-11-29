@@ -1,0 +1,8 @@
+git init
+git add .
+git remote add origin path-to-repository
+git commit -m "update"
+git pull origin main
+Edit any text and commit again.
+git push origin main
+
