@@ -1,0 +1,12 @@
+1. http POST :5000/api/messages/ message='Welcome to IoT' duration=10 message_category='Information'
+2. http POST :5000/api/messages/ message='Measuring ambient temperature' duration=5 message_category='Information'
+Answer: Chapter 5 - 13321
+3. sudo -u psql, psql, sudo -u postgres createdb messages
+CREATE ROLE user_name WITH LOGIN PASSWORD 'password';
+GRANT ALL PRIVILEGES ON DATABASE messages TO user_name;
+ALTER USER user_name CREATEDB;
+\q
+4. python migrate.py db init
+5. python migrate.py db migrate, python migrate.py db upgrade
+6. http POST :5000/api/categories/ name='Information'
+7. http POST :5000/api/categories/ name='Warning'
