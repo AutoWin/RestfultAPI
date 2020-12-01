@@ -18,10 +18,15 @@ class MessageResource(Resource):
 
     def patch(self, id):
         message = Message.query.get_or_404(id)
-
         message_dict = request.get_json(force=True)
+
         if 'message' in message_dict:
-            message.message = message_dict['message']
+            message_message = message_dict['message']
+            if Message.is_unique(id=id, message=message_message):
+                message.message = message_message
+            else:
+                response = {'error': 'A message with the same message already exists'}
+                return response, status.HTTP_400_BAD_REQUEST
         if 'duration' in message_dict:
             message.duration = message_dict['duration']
         if 'printed_times' in message_dict:
@@ -71,6 +76,10 @@ class MessageListResource(Resource):
         errors = ''
         if errors:
             return errors, status.HTTP_400_BAD_REQUEST
+        message_message = request_dict['message']
+        if not Message.is_unique(id=0, message=message_message):
+            response = {'error': 'A message with the same message already exists'}
+            return response, status.HTTP_400_BAD_REQUEST
         try:
             category_name = request_dict['category']
             category = Category.query.filter_by(name=category_name).first()
@@ -81,7 +90,7 @@ class MessageListResource(Resource):
             # Now that we are sure we have a category
             # create a new Message
             message = Message(
-                message=request_dict['message'],
+                message=message_message,
                 duration=request_dict['duration'],
                 category=category)
             message.add(message)
@@ -112,7 +121,12 @@ class CategoryResource(Resource):
             return errors, status.HTTP_400_BAD_REQUEST
         try:
             if 'name' in category_dict:
-                category.name = category_dict['name']
+                category_name = category_dict['name']
+                if Category.is_unique(id=id, name=category_name):
+                    category.name = category_name
+                else:
+                    response = {'error': 'A category with the same name already exists'}
+                    return response, status.HTTP_400_BAD_REQUEST
             category.update()
             return self.get(id)
         except SQLAlchemyError as e:
@@ -147,8 +161,12 @@ class CategoryListResource(Resource):
         errors = category_schema.validate(request_dict)
         if errors:
             return errors, status.HTTP_400_BAD_REQUEST
+        category_name = request_dict['name']
+        if not Category.is_unique(id=0, name=category_name):
+            response = {'error': 'A category with the same name already exists'}
+            return response, status.HTTP_400_BAD_REQUEST
         try:
-            category = Category(request_dict['name'])
+            category = Category(category_name)
             category.add(category)
             query = Category.query.get(category.id)
             result = category_schema.dump(query).data
