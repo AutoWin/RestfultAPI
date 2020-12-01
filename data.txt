@@ -10,3 +10,4 @@ ALTER USER user_name CREATEDB;
 5. python migrate.py db migrate, python migrate.py db upgrade
 6. http POST :5000/api/categories/ name='Information'
 7. http POST :5000/api/categories/ name='Warning'
+Answer: Chapter 6 - 12331

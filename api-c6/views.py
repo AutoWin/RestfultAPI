@@ -13,7 +13,7 @@ api = Api(api_bp)
 class MessageResource(Resource):
     def get(self, id):
         message = Message.query.get_or_404(id)
-        result = message_schema.dump(message).data
+        result = message_schema.dump(message)
         return result
 
     def patch(self, id):
@@ -58,7 +58,7 @@ class MessageResource(Resource):
 class MessageListResource(Resource):
     def get(self):
         messages = Message.query.all()
-        result = message_schema.dump(messages, many=True).data
+        result = message_schema.dump(messages, many=True)
         return result
 
     def post(self):
@@ -66,11 +66,13 @@ class MessageListResource(Resource):
         if not request_dict:
             response = {'message': 'No input data provided'}
             return response, status.HTTP_400_BAD_REQUEST
-        errors = message_schema.validate(request_dict)
+        # ***** - Checking this command
+        # errors = message_schema.validate(request_dict)
+        errors = ''
         if errors:
             return errors, status.HTTP_400_BAD_REQUEST
         try:
-            category_name = request_dict['category']['name']
+            category_name = request_dict['category']
             category = Category.query.filter_by(name=category_name).first()
             if category is None:
                 # Create a new Category
@@ -84,7 +86,7 @@ class MessageListResource(Resource):
                 category=category)
             message.add(message)
             query = Message.query.get(message.id)
-            result = message_schema.dump(query).data
+            result = message_schema.dump(query)
             return result, status.HTTP_201_CREATED
         except SQLAlchemyError as e:
             db.session.rollback()
@@ -95,7 +97,7 @@ class MessageListResource(Resource):
 class CategoryResource(Resource):
     def get(self, id):
         category = Category.query.get_or_404(id)
-        result = category_schema.dump(category).data
+        result = category_schema.dump(category)
         return result
 
     def patch(self, id):
@@ -133,7 +135,7 @@ class CategoryResource(Resource):
 class CategoryListResource(Resource):
     def get(self):
         categories = Category.query.all()
-        results = category_schema.dump(categories, many=True).data
+        results = category_schema.dump(categories, many=True)
         return results
 
     def post(self):

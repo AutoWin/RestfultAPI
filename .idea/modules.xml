@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/RestfulAPI.iml" filepath="$PROJECT_DIR$/.idea/RestfulAPI.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/RestfultAPI.iml" filepath="$PROJECT_DIR$/.idea/RestfultAPI.iml" />
     </modules>
   </component>
 </project>

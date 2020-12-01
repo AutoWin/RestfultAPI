@@ -50,8 +50,7 @@ class CategorySchema(ma.Schema):
     id = fields.Integer(dump_only=True)
     name = fields.String(required=True, validate=validate.Length(3))
     url = ma.URLFor('api.categoryresource', id='<id>', _external=True)
-    messages = fields.Nested('MessageSchema', many=True,
-                             exclude=('category',))
+    messages = fields.Nested('MessageSchema', many=True, exclude=('category',))
 
 
 class MessageSchema(ma.Schema):
@@ -59,8 +58,7 @@ class MessageSchema(ma.Schema):
     message = fields.String(required=True, validate=validate.Length(1))
     duration = fields.Integer()
     creation_date = fields.DateTime()
-    category = fields.Nested(CategorySchema, only=['id', 'url', 'name'],
-                             required=True)
+    category = fields.Nested(CategorySchema, only=['id', 'url', 'name'], required=True)
     printed_times = fields.Integer()
     printed_once = fields.Boolean()
     url = ma.URLFor('api.messageresource', id='<id>', _external=True)
