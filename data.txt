@@ -11,3 +11,7 @@ ALTER USER user_name CREATEDB;
 6. http POST :5000/api/categories/ name='Information'
 7. http POST :5000/api/categories/ name='Warning'
 Answer: Chapter 6 - 12331
+8. http PATCH :5000/api/messages/1 printed_once=true printed_times=1
+!Check Schema Validation
+9. python migrate.py db migrate, python migrate.py upgrade
+Answer: Chapter 7 - 31331
