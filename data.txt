@@ -14,4 +14,9 @@ Answer: Chapter 6 - 12331
 8. http PATCH :5000/api/messages/1 printed_once=true printed_times=1
 !Check Schema Validation
 9. python migrate.py db migrate, python migrate.py upgrade
-Answer: Chapter 7 - 31331
+Answer: Chapter 7 - 31312
+10. sudo -u psql, sudo -u postgres createdb test_messages
+11. GRANT ALL PRIVILEGES ON DATABASE test_messages TO user_name;
+\q
+12. pip freeze > requirements.txt
+Answer: Chapter 8 - 12211
